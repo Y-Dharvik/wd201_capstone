@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning Management System</title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+    <style>
+        /* Add custom styles here */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nav {
+            background-color: #f9fafb;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav li {
+            margin-right: 10px;
+        }
+
+        .featured-courses {
+            margin-bottom: 40px;
+        }
+
+        .featured-courses .course {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .featured-courses .course h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .featured-courses .course p {
+            margin-bottom: 10px;
+        }
+
+        .featured-courses .course a {
+            color: #3182ce;
+            text-decoration: none;
+        }
+
+        .recent-announcements {
+            margin-bottom: 40px;
+        }
+
+        .recent-announcements ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recent-announcements li {
+            margin-bottom: 10px;
+            background-color: #f9fafb;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Learning Management System</h1>
+        </header>
+
+        <nav class="nav">
+            <ul>
+                <li><a href="/" class="text-blue-500">Home</a></li>
+                <li><a href="/courses" class="text-blue-500">Courses</a></li>
+                <li><a href="/login" class="text-blue-500">Login</a></li>
+                <li><a href="/signup" class="text-blue-500">Sign-Up</a></li>
+            </ul>
+        </nav>
+
+        <section class="featured-courses">
+            <h2 class="text-2xl font-bold">Featured Courses</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <!-- <% // courses.forEach(function(course) { %>
+                    <div class="course">
+                        <h3><%= //course.title %></h3>
+                        <p><%= //course.description %></p>
+                        <a href="/courses/<%= //course.id %>" class="text-blue-500">Learn More</a>
+                    </div>
+                <% //}); %> -->
+            </div>
+        </section>
+
+        <section class="recent-announcements">
+            <h2 class="text-2xl font-bold">Recent Announcements</h2>
+            <ul>
+                <!-- <% //announcements.forEach(function(announcement) { %>
+                    <li><%= //announcement.title %></li>
+                <% //}); %> -->
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2022 Learning Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
