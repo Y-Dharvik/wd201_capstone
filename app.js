@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const path = require("path");
-const { User } = require("./models");
+const { Courses, User } = require("./models");
 const bodyParser = require("body-parser");
 
 
@@ -77,11 +77,15 @@ app.use(function(request, response, next) {
 });
 
 app.set("view engine", "ejs");
-app.get("/", async (request, response) => {
-    if(request.isAuthenticated()){
-      return response.redirect("/dashboard");
+app.get("/", async (req, res) => {
+    if(req.isAuthenticated()){
+      if(req.user.role == "student"){
+        return res.redirect("/dashboard-student", { user: req.user, courses: Courses });
+      }else if(req.user.role == "teacher"){
+        return res.redirect("/dashboard-teacher", { user: req.user, courses: Courses });
+      }
     }
-    response.render("default-page", );
+    res.render("default-page", );
 });
 
 app.get("/signup", function (request, response) {
@@ -102,6 +106,12 @@ app.post('/users', async(req, res) => {
     req.flash("error", "Your Password must be atleast 2 characters long!");
     return res.redirect("/signup");
   }
+  const user = await User.findOne({ where: { email: req.body.email } });
+  if (user) {
+    req.flash("error", "User with this email already exists!");
+    return res.redirect("/signup");
+  }
+
     try{
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
         const user = await User.create({
@@ -145,7 +155,7 @@ app.post(
   function (request, response) {
     try{
       console.log(request.user);
-      if(request.user.role == "student"){
+      if(request.user.role == "student"){        
         return response.redirect("/dashboard-student");
       }else{
         return response.redirect("/dashboard-teacher");
@@ -167,11 +177,40 @@ app.get('/signout', function(req, res, next){
 });
 
 app.get('/dashboard-student', connectEnsureLogin.ensureLoggedIn(), function(req, res){
-  res.render("dashboard-student", { user: req.user });
+  // student has to see all the available courses created by all the teachers
+  const courses = Courses.findAll()
+  .then((courses) => {
+    console.log(courses);
+    res.render("dashboard-student", { user: req.user, courses: courses, csrfToken: req.csrfToken()});
+  })
 })
 
 app.get('/dashboard-teacher', connectEnsureLogin.ensureLoggedIn(), function(req, res){
-  res.render("dashboard-teacher", { user: req.user });
+  const courses = Courses.findAll({where : {creatorId : req.user.id}})
+  .then((courses) => {
+    console.log(courses);
+    res.render("dashboard-teacher", { user: req.user, courses: courses, csrfToken: req.csrfToken()});
+  })
+})
+
+app.get('/dashboard-teacher/addCourse', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  res.render("addCourse", { user: req.user, csrfToken: req.csrfToken()});
+})
+
+app.post('/dashboard-teacher/addCourse', async(req, res) => {
+  try{
+    const course = await Courses.addCourse(req.body.courseName, req.body.desc, req.user.id);
+    if(req.accepts("html")){
+      flash("success", "Course Created Successfully!");
+      return res.redirect("/dashboard-teacher");
+    }else{
+      return res.json(course);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Create course, Please try again!");
+    return res.status(422).json(error);
+  }
 })
 
 app.listen(port, () => {

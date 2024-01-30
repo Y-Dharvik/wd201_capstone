@@ -92,21 +92,32 @@
         <div class="container">
             <div class="dashboard">
                 <h6>Welcome, <%= user.firstName %>!</h6>
-                <a href="#" class="button">Create a new course</a>
+                <a href="/dashboard-teacher/addCourse" class="button">Create a new course</a>
             </div>
 
-            <div class="featured-courses">
-                <h3>Featured Courses</h3>
-                <!-- <% //if(courses && courses.length > 0) { %>
-                    <% //for(var i=0; i<courses.length; i++) { %>
-                        <div class="course">
-                            <h3><a href="/courses/<%= //courses[i]._id %>"><%= //courses[i].title %></a></h3>
-                            <p><%= //courses[i].description %></p>
-                        </div>
-                    <%// } %>
-                <% //} else { %>
-                    <p>No courses found.</p>
-                <% //} %> -->
+            <div class="my-courses" style="display: flex; flex-wrap: wrap;">
+                <div class="my-courses">
+                    <h3>My Courses</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <% if(courses && courses.length > 0) { %>
+                            <table>
+                                <tr>
+                                    <% for(var i=0; i<courses.length; i++) { %>
+                                        <td>
+                                            <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
+                                                <h3><a href="#"><%= courses[i].courseName %></a></h3>
+                                                <p><%= courses[i].desc %></p>
+                                            </div>
+                                        </td>
+                                    <% } %>
+                                </tr>
+                            </table>
+                        <% } else { %>
+                            <p>No courses found.</p>
+                        <% } %>
+                    </div>
+                </div>
+                
             </div>
         
     </body>
