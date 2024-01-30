@@ -1,0 +1,100 @@
+<!-- create dashboard for student -->
+<html>
+    <head>
+        <title>Learning Management System</title>
+        <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+        <style>
+            /* Add custom styles here */
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                background-color: #f9fafb;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav li {
+                margin-right: 10px;
+            }
+
+            .featured-courses {
+                margin-bottom: 40px;
+            }
+
+            .featured-courses .course {
+                background-color: #ffffff;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+            }
+
+            .featured-courses .course h3 {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course p {
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course a {
+                color: #3182ce;
+                text-decoration: none;
+            }
+
+            /* Additional styles for the dashboard */
+            .dashboard {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .dashboard h6 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .dashboard .button {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body class="justify-center">
+        <%- include('header.ejs') %>
+        <nav class="nav">
+            <ul>
+                <li><a href="/dashboard-student">Home</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/signout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="dashboard">
+                <h6>Welcome, <%= user.firstName %></h6>
+                <a href="/courses" class="button">View Courses</a>
+            </div>
+        </div>
+        
+    </body>
+</html>

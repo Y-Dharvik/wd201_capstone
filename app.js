@@ -116,7 +116,11 @@ app.post('/users', async(req, res) => {
             return res.status(422).json(err);
           }
           if (req.accepts("html")) {
-            return res.redirect("/dashboard");
+            if(req.user.role == "student"){
+              return res.redirect("/dashboard-student");
+            }else if(req.user.role == "teacher"){
+              return res.redirect("/dashboard-teacher");
+            }
           } else {
             return res.json(user);
           }
@@ -141,7 +145,11 @@ app.post(
   function (request, response) {
     try{
       console.log(request.user);
-      response.redirect("/dashboard");
+      if(request.user.role == "student"){
+        return response.redirect("/dashboard-student");
+      }else{
+        return response.redirect("/dashboard-teacher");
+      }
     }catch(error){
       console.log(error);
       request.flash("error", "Couldn't Login, Please try again!");
@@ -158,7 +166,13 @@ app.get('/signout', function(req, res, next){
   });
 });
 
+app.get('/dashboard-student', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  res.render("dashboard-student", { user: req.user });
+})
 
+app.get('/dashboard-teacher', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  res.render("dashboard-teacher", { user: req.user });
+})
 
 app.listen(port, () => {
   console.log(`Capstone Project listening at http://localhost:${port}`)

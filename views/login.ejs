@@ -27,6 +27,9 @@
                     <div class = "py-2">
                         <button type = "submit" class = "w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">LogIn</button>
                     </div>
+                    <div>
+                        <p>Don't have an account? <a class = "w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800" href = "/signup">Register</a></p>
+                    </div>
                 </form>
                 <% if(messages && messages.error && messages.error.length > 0)  { %>
                     <% for(var i=0; i<messages.error.length; i++) { %>
