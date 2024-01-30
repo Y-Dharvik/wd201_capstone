@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "creatorId",
         onDelete: "CASCADE",
       });
+
+      Courses.hasMany(models.Chapter, {
+        foreignKey: "courseId",
+        onDelete: "CASCADE",
+      });
     }
 
     static async addCourse(courseName, desc, creatorId) {

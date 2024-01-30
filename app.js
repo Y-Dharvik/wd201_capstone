@@ -9,8 +9,9 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const path = require("path");
-const { Courses, User } = require("./models");
+const { Courses, User, Chapter, Page } = require("./models");
 const bodyParser = require("body-parser");
+const chapter = require("./models/chapter");
 
 
 app.use(bodyParser.json());
@@ -209,6 +210,76 @@ app.post('/dashboard-teacher/addCourse', async(req, res) => {
   }catch(error){
     console.log(error);
     req.flash("error", "Couldn't Create course, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-teacher/editCourse/:courseId/', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  const courses = Courses.findOne({where : {id : req.params.courseId}})
+  .then((courses) => {
+    console.log(courses);
+    res.render("editCourse", { user: req.user, courses: courses, csrfToken: req.csrfToken()});
+  })
+})
+
+app.post('/dashboard-teacher/editCourse/:courseId', async(req, res) => {
+  if(req.body.courseName.length == 0){
+    req.flash("error", "Course Name cannot be blank!");
+    return res.redirect("/dashboard-teacher/editCourse/:courseId");
+  }
+  if(req.body.desc.length == 0){
+    req.flash("error", "Course Description cannot be blank!");
+    return res.redirect("/dashboard-teacher/editCourse/:courseId");
+  }
+  try{
+    const course = await Courses.update({courseName:req.body.courseName, desc:req.body.desc} , {where : {id : req.params.courseId}});
+    if(req.accepts("html")){
+      flash("success", "Course Edited Successfully!");
+      return res.redirect("/dashboard-teacher");
+    }else{
+      return res.json(course);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Edit course, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-teacher/addChapter/:courseId', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  res.render("addChapter", { user: req.user, courseId: req.params.courseId, csrfToken: req.csrfToken()});
+})
+
+app.post('/dashboard-teacher/addChapter/:courseId', connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
+  if(req.body.chapterNumber.length == 0){
+    req.flash("error", "Chapter Number cannot be blank!");
+    return res.redirect("/dashboard-teacher/addChapter/:courseId");
+  }
+  if(req.body.chapterName.length == 0){
+    req.flash("error", "Chapter Name cannot be blank!");
+    return res.redirect("/dashboard-teacher/addChapter/:courseId");
+  }
+  if(req.body.chapterDesc.length == 0){
+    req.flash("error", "Chapter Description cannot be blank!");
+    return res.redirect("/dashboard-teacher/addChapter/:courseId");
+  }
+
+  try{
+    const chapter = await Chapter.create({
+      chapterName : req.body.chapterName,
+      chapterNumber : req.body.chapterNumber,
+      chapterDesc: req.body.chapterDesc,
+      courseId: req.params.courseId,
+    })
+    if(req.accepts("html")){
+      flash("success", "Chapter Added Successfully!");
+      return res.redirect("/dashboard-teacher");
+    }else{
+      return res.json(course);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Create chapter, Please try again!");
     return res.status(422).json(error);
   }
 })

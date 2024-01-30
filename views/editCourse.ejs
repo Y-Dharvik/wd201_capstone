@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Learning Management System</title>
+        <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+        <style>
+            /* Add custom styles here */
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                background-color: #f9fafb;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav li {
+                margin-right: 10px;
+            }
+
+            .featured-courses {
+                margin-bottom: 40px;
+            }
+
+            .featured-courses .course {
+                background-color: #ffffff;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+            }
+
+            .featured-courses .course h3 {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course p {
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course a {
+                color: #3182ce;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Learning Management System</h1>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/dashboard-teacher">Home</a></li>
+                    <li><a href="/signout">Sign Out</a></li>
+                </ul>
+            </div>
+            <div class="course-edit">
+                <h2>Edit Course</h2>
+                <h3>Course id: <%= courses.id %></h3>
+                
+                <form action='/dashboard-teacher/editCourse/<%= courses.id %>' method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="py-2">
+                        <label for="courseName">Title</label>
+                        <input type="text" name="courseName" id="courseName" class="w-full px-2 py-1 border border-gray-400 rounded" value="<%= courses.courseName %>" required>
+                    </div>
+                    <div class="py-2">
+                        <label for="desc">Description</label>
+                        <input type="text" name="desc" id="desc" class="w-full px-2 py-1 border border-gray-400 rounded" value="<%= courses.desc %>">
+                    </div>
+                    <div class="py-2">
+                        <button type="submit" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Edit Course</button>
+                    </div>
+
+                    <div class="py-2">
+                        <button class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800" href="/dashboard-teacher/addChapter/<%= courses.id %>">Add Chapter</button>
+                    </div>
+                    <% if(messages && messages.error && messages.error.length > 0)  { %>
+                        <% for(var i=0; i<messages.error.length; i++) { %>
+                                <li> <%= messages.error[i] %></li>
+                        <% } %>
+                      <% } %>
+                <h3
+                

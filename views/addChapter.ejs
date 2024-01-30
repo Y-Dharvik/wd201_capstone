@@ -1,0 +1,96 @@
+<!-- A page where we can add multiple chapters to our course with the pirticular courseId -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Learning Management System</title>
+        <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+        <style>
+            /* Add custom styles here */
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                background-color: #f9fafb;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav li {
+                margin-right: 10px;
+            }
+
+            .featured-courses {
+                margin-bottom: 40px;
+            }
+
+            .featured-courses .course {
+                background-color: #ffffff;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+            }
+
+            .featured-courses .course h3 {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course p {
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course a {
+                color: #3182ce;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Learning Management System</h1>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/dashboard-teacher">Home</a></li>
+                    <li><a href="/dashboard-teacher/addCourse">Add Course</a></li>
+                    <li><a href="/dashboard-teacher/addChapter">Add Chapter</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+            <div class="featured-courses">
+                <h2>Add Chapter</h2>
+                <form action="/dashboard-teacher/addChapter/<%= courseId %>" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div>
+                        <label for="chapterNumber">Chapter Number</label>
+                        <input type="text" name="chapterNumber" id="chapterNumber" class="w-full px-2 py-1 border border-gray-400 rounded" required>
+                        <label for="chapterName">Chapter Name</label>
+                        <input type="text" name="chapterName" id="chapterName" class="w-full px-2 py-1 border border-gray-400 rounded" required>
+                        <label for="chapterDesc">Chapter Description</label>
+                        <textarea name="chapterDesc" id="chapterDesc" class="w-full px-2 py-1 border border-gray-400 rounded" required> </textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Add Chapter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
