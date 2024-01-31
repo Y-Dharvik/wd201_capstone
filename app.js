@@ -274,8 +274,8 @@ app.post('/dashboard-teacher/addChapter/:courseId', connectEnsureLogin.ensureLog
       courseId: req.params.courseId,
     })
     if(req.accepts("html")){
-      flash("success", "Chapter Added Successfully!");
-      return res.redirect("/dashboard-teacher/addChapter/" + req.params.courseId);
+      req.flash("success", "Chapter Added Successfully!");
+      return res.redirect("/dashboard-teacher/editCourse/" + req.params.courseId);
     }else{
       return res.json(course);
     }
@@ -314,6 +314,74 @@ app.post('/dashboard-teacher/editChapter/:chapterId', async(req, res) => {
   }catch(error){
     console.log(error);
     req.flash("error", "Couldn't Edit chapter, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-teacher/addPage/:chapterId', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+  console.log("got + "+req.params.chapterId);
+  res.render("addPage", { user: req.user, chapterId: req.params.chapterId, csrfToken: req.csrfToken()});
+})
+
+app.post('/dashboard-teacher/addPage/:chapterId', connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
+  if(req.body.pageNumber.length == 0){
+    req.flash("error", "Page Number cannot be blank!");
+    return res.redirect("/dashboard-teacher/addPage/" + req.params.chapterId);
+  }
+  if(req.body.pageName.length == 0){
+    req.flash("error", "Page Name cannot be blank!");
+    return res.redirect("/dashboard-teacher/addPage/" + req.params.chapterId);
+  }
+  if(req.body.pageContent.length == 0){
+    req.flash("error", "Page Content cannot be blank!");
+    return res.redirect("/dashboard-teacher/addPage/" + req.params.chapterId);
+  }
+
+  try{
+    const page = await Page.create({
+      pageName : req.body.pageName,
+      pageNumber : req.body.pageNumber,
+      pageContent: req.body.pageContent,
+      chapterId: req.params.chapterId,
+    })
+    if(req.accepts("html")){
+      req.flash("success", "Page Added Successfully!");
+      return res.redirect("/dashboard-teacher/editChapter/" + req.params.chapterId);
+    }else{
+      return res.json(page);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Create page, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-teacher/editPage/:pageId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  const page = await Page.findOne({where : {id : req.params.pageId}});
+  res.render("editPage", { user: req.user, page: page, chapterId: page.chapterId, csrfToken: req.csrfToken()});
+})
+
+app.post('/dashboard-teacher/editPage/:pageId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  if(req.body.pageName.length == 0){
+    req.flash("error", "Page Name cannot be blank!");
+    return res.redirect("/dashboard-teacher/editPage/" + req.params.pageId);
+  }
+  if(req.body.pageContent.length == 0){
+    req.flash("error", "Page Content cannot be blank!");
+    return res.redirect("/dashboard-teacher/editPage/" + req.params.pageId);
+  }
+  try{
+    const page = await Page.update({pageName:req.body.pageName, pageContent:req.body.pageContent} , {where : {id : req.params.pageId}});
+    if(req.accepts("html")){
+      req.flash("success", "Page Edited Successfully!");
+      return res.redirect("/dashboard-teacher/editChapter/" + req.body.chapterId);
+    }else{
+      return res.json(page);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Edit page, Please try again!");
     return res.status(422).json(error);
   }
 })
