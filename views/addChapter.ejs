@@ -90,6 +90,17 @@
                         <button type="submit" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Add Chapter</button>
                     </div>
                 </form>
+                <% if(messages && messages.error && messages.error.length > 0)  { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                            <li> <%= messages.error[i] %></li>
+                    <% } %>
+                  <% } %>
+
+                <% if(messages && messages.success && messages.success.length > 0)  { %>
+                    <% for(var i=0; i<messages.success.length; i++) { %>
+                            <li> <%= messages.success[i] %></li>
+                    <% } %>
+                <% } %>
             </div>
         </div>
     </body>
