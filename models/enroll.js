@@ -11,15 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Enroll.belongsTo(models.User), {
-        foreignKey: "userId",
-        onDelete: "CASCADE",
-      }
-
-      Enroll.belongsTo(models.Courses), {
-        foreignKey: "courseId",
-        onDelete: "CASCADE",
-      }
     }
   }
   Enroll.init({

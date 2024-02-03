@@ -1,4 +1,3 @@
-<!-- create dashboard for student -->
 <html>
     <head>
         <title>Learning Management System</title>
@@ -80,76 +79,82 @@
             }
         </style>
     </head>
-    <body class="justify-center">
+    <body>
         <%- include('header.ejs') %>
         <nav class="nav">
             <ul>
-                <li><a href="/dashboard-student">Home</a></li>
+                <li><a href="<% if(user.role === 'teacher') { %>
+                        /dashboard-teacher
+                    <% } else { %>
+                        /dashboard-student
+                    <% } %>
+                    ">Home</a></li>
                 <li><a href="/signout">Logout</a></li>
             </ul>
         </nav>
 
-        <div>
+        <div class="container">
             <div class="dashboard">
-                <h6>Welcome, <%= user.firstName %> <%= user.lastName %></h6>
+                <h6>Welcome, <%= user.firstName %>!</h6>
             </div>
-            <div class="enroled-courses">
-                <h3>Enroled Courses</h3>
+
+            <div class="my-courses" style="display: flex; flex-wrap: wrap;">
+                <div class="my-courses">
+                    <h3>View Course</h3>
+                    <div>
+                        
+                        <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
+                            <h3> Course Name: <a href="#"><%= course.courseName %></a></h3>
+                            <p> Course Description: <%= course.desc %></p>
+                            <p> Course Creator: <%= creatorName %></p>
+                        </div>          
+                    </div>
+                </div>
+                
+            </div>
+            <br>
+                <br>
+                <h2>Chapters</h2>
                 <div class="grid grid-cols-3 gap-4">
-                    <% if(enroledCourses && enroledCourses.length > 0) { %>
+                    <% if(chapters && chapters.length > 0) { %>
                         <table>
                             <tr>
-                                <% for(var i=0; i<enroledCourses.length; i++) { %>
+                                <% for(var i=0; i<chapters.length; i++) { %>
                                     <td>
-                                        <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="/dashboard-student/viewCourse/<%= enroledCourses[i].id %>" class="underline on-hover:bg-red-800"> Name: <%= enroledCourses[i].courseName %></a></h3>
-                                            <p>Description: <%= enroledCourses[i].desc %></p>
+                                        <div class="chapter" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
+                                            <h3><a href="/dashboard-student/viewChapter/<%= chapters[i].id %>" class="underline on-hover:bg-red-800"><%= chapters[i].chapterNumber %> <%= chapters[i].chapterName %></a></h3>
+                                            <p><%= chapters[i].chapterDesc %></p>
                                         </div>
                                     </td>
                                 <% } %>
                             </tr>
                         </table>
                     <% } else { %>
-                        <p>No courses found.</p>
+                        <p>No Chapters found.</p>
                     <% } %>
                 </div>
-
-            </div>
-            <br>
-            <br>
-            <div class="available-courses">
-                <h3>Available Courses</h3>
-                <div class="auto flex grid-cols-3 gap-4">
-                    <% if(courses && courses.length > 0) { %>
-                        <table>
-                            <tr>
-                                <% for(var i=0; i<courses.length; i++) { %>
-                                    <td>
-                                        <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="/dashboard-student/previewCourse/<%= courses[i].id %>" class="underline on-hover:bg-red-800">Name: <%= courses[i].courseName %></a></h3>
-                                            <p>Description: <%= courses[i].desc %></p>
-                                        </div>
-                                    </td>
-                                <% } %>
-                            </tr>
-                        </table>
-                    <% } else { %>
-                        <p>No courses found.</p>
+                <br>
+                
+                
+                <% if(messages && messages.error && messages.error.length > 0)  { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                            <li> <%= messages.error[i] %></li>
                     <% } %>
-                </div>
-            </div>
-            <% if(messages && messages.error && messages.error.length > 0)  { %>
-                <% for(var i=0; i<messages.error.length; i++) { %>
-                        <li> <%= messages.error[i] %></li>
-                <% } %>
-              <% } %>
+                  <% } %>
 
-            <% if(messages && messages.success && messages.success.length > 0)  { %>
-                <% for(var i=0; i<messages.success.length; i++) { %>
-                        <li> <%= messages.success[i] %></li>
+                <% if(messages && messages.success && messages.success.length > 0)  { %>
+                    <% for(var i=0; i<messages.success.length; i++) { %>
+                            <li> <%= messages.success[i] %></li>
+                    <% } %>
                 <% } %>
-            <% } %>
         </div>
-        
+        <div class="dashboard justify-left">
+            <a href="<% if(user.role === 'teacher') { %>
+                        /dashboard-teacher
+                    <% } else { %>
+                        /dashboard-student
+                    <% } %>
+                    " class="button justify-left">Back</a>
+        </div>
     </body>
 </html>

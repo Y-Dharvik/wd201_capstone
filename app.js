@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const path = require("path");
-const { Courses, User, Chapter, Page } = require("./models");
+const { Courses, User, Chapter, Page, Enroll } = require("./models");
 const bodyParser = require("body-parser");
 const chapter = require("./models/chapter");
 
@@ -177,13 +177,25 @@ app.get('/signout', function(req, res, next){
   });
 });
 
-app.get('/dashboard-student', connectEnsureLogin.ensureLoggedIn(), function(req, res){
+app.get('/dashboard-student', connectEnsureLogin.ensureLoggedIn(), async (req, res) =>{
   // student has to see all the available courses created by all the teachers
-  const courses = Courses.findAll()
-  .then((courses) => {
+  const courses = await Courses.findAll()
+  console.log("courses found")
+  const enroledCourses = await Enroll.findAll({where : {userId : req.user.id, isEnrolled : true}});
+  const enroledCoursesDetails = [];
+  for(let i = 0; i < enroledCourses.length; i++){
+    const course = await Courses.findOne({where : {id : enroledCourses[i].courseId}});
+    enroledCoursesDetails.push(course);
+  }
+  try{
     console.log(courses);
-    res.render("dashboard-student", { user: req.user, courses: courses, csrfToken: req.csrfToken()});
-  })
+    res.render("dashboard-student", { user: req.user, courses: courses, enroledCourses: enroledCoursesDetails, csrfToken: req.csrfToken()});
+  }
+  catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Load dashboard, Please try again!");
+    return res.status(422).json(error);
+  }
 })
 
 app.get('/dashboard-teacher', connectEnsureLogin.ensureLoggedIn(), function(req, res){
@@ -382,6 +394,52 @@ app.post('/dashboard-teacher/editPage/:pageId', connectEnsureLogin.ensureLoggedI
   }catch(error){
     console.log(error);
     req.flash("error", "Couldn't Edit page, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-student/viewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  const course = await Courses.findOne({where : {id : req.params.courseId}});
+  const creator = await User.findOne({where : {id : course.creatorId}});
+  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}});
+  console.log(course);
+  console.log(chapters);
+  res.render("viewCourse", { user: req.user, course: course, creatorName: creator.firstName, chapters : chapters, csrfToken: req.csrfToken()});
+});
+
+app.get('/dashboard-student/previewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  const course = await Courses.findOne({where : {id : req.params.courseId}});
+  const creator = await User.findOne({where : {id : course.creatorId}});
+  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}});
+  console.log(course);
+  console.log(chapters);
+  res.render("previewCourse", { user: req.user, course: course, creatorName: creator.firstName, chapters : chapters, csrfToken: req.csrfToken()});
+});
+
+app.get('/dashboard-student/viewChapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  const chapter = await Chapter.findOne({where : {id : req.params.chapterId}});
+  const pages = await Page.findAll({where : {chapterId : req.params.chapterId}});
+  console.log(chapter);
+  console.log(pages);
+  res.render("viewChapter", { user: req.user, chapter: chapter, pages : pages, csrfToken: req.csrfToken()});
+})
+
+app.get('/dashboard-student/enroll/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  try{
+    const enroll = await Enroll.create({
+      courseId : req.params.courseId,
+      userId : req.user.id,
+      isEnrolled : true,
+    })
+    if(req.accepts("html")){
+      req.flash("success", "Course Enrolled Successfully!");
+      return res.redirect("/dashboard-student");
+    }else{
+      return res.json(enroll);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Enroll course, Please try again!");
     return res.status(422).json(error);
   }
 })

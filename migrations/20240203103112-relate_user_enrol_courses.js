@@ -12,24 +12,21 @@ module.exports = {
 
     queryInterface.addColumn("Enrolls", "userId", {
       type: Sequelize.INTEGER,
+      allowNull: false,
       references: {
         model: "Users",
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
+        key: "id"
+      }
     });
 
     queryInterface.addColumn("Enrolls", "courseId", {
       type: Sequelize.INTEGER,
+      allowNull: false,
       references: {
         model: "Courses",
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
+        key: "id"
+      }
     });
-
   },
 
   async down (queryInterface, Sequelize) {
@@ -40,7 +37,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    queryInterface.removeColumn(Enroll, "userId");
-    queryInterface.removeColumn(Enroll, "courseId");
+    queryInterface.removeColumn("Enrolls", "userId");
+    queryInterface.removeColumn("Enrolls", "courseId");
   }
 };

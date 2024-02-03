@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Learning Management System</title>
-        <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./css/styles.css">
         <style>
             /* Add custom styles here */
             .container {
@@ -98,15 +99,15 @@
             <div class="my-courses" style="display: flex; flex-wrap: wrap;">
                 <div class="my-courses">
                     <h3>My Courses</h3>
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class=" auto flex grid-cols-3 gap-2">
                         <% if(courses && courses.length > 0) { %>
                             <table>
                                 <tr>
                                     <% for(var i=0; i<courses.length; i++) { %>
-                                        <td>
+                                        <td style="padding-right: 20px;">
                                             <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                                <h3><a href="#"><%= courses[i].courseName %></a></h3>
-                                                <p><%= courses[i].desc %></p>
+                                                <h3> Course Name: <a href="/dashboard-student/viewCourse/<%= courses[i].id %>" class="underline on-hover:bg-red-800"><%= courses[i].courseName %></a></h3><br>
+                                                <p> Course Description: <%= courses[i].desc %></p><br>
                                                 <a href="/dashboard-teacher/editCourse/<%= courses[i].id %>">Edit</a>
                                             </div>
                                         </td>
