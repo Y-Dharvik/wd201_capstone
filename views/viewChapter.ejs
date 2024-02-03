@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <title>Learning Management System</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./css/styles.css">
+        <style>
+            /* Add custom styles here */
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                background-color: #f9fafb;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav li {
+                margin-right: 10px;
+            }
+
+            .featured-courses {
+                margin-bottom: 40px;
+            }
+
+            .featured-courses .course {
+                background-color: #ffffff;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+            }
+
+            .featured-courses .course h3 {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course p {
+                margin-bottom: 10px;
+            }
+
+            .featured-courses .course a {
+                color: #3182ce;
+                text-decoration: none;
+            }
+
+            .page-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+            }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Learning Management System</h1>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/dashboard-student" class="btn">Dashboard</a></li>
+                    <li>
+                        <a href="/dashboard-student/viewCourse/<%= course.id %>" class="btn">
+                            Back to chapters
+                        </a>
+                    </li>
+                    <li><a href="/dashboard-student/logout" class="btn">Logout</a></li>
+                </ul>
+            </div>
+            <div class="mb-4 text-center" style="height: 100vh; overflow-y: scroll;">
+                <h2 class="text-2xl mb-2">Pages</h2>
+                <div class="auto flex justify-center grid-cols-10 gap-4">
+                    <% if(pages && pages.length > 0) { %>
+                        <div class="page-container">
+                            <% for(var i=0; i<pages.length; i++) { %>
+                                <div class="page" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px; margin-bottom: 20px;">
+                                    <h3> Page Number: <a href="/dashboard-student/viewPage/<%= pages[i]._id %>"><%= pages[i].pageNumber %></a></h3>
+                                    <h3> Page Name: <a href="/dashboard-student/viewPage/<%= pages[i]._id %>"><%= pages[i].pageName %></a></h3>
+                                    <p> Page Content: <%= pages[i].pageContent %></p>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p>No Pages found.</p>
+                    <% } %>
+                </div>
+            </div>
+                    
+</html>

@@ -401,7 +401,7 @@ app.post('/dashboard-teacher/editPage/:pageId', connectEnsureLogin.ensureLoggedI
 app.get('/dashboard-student/viewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const course = await Courses.findOne({where : {id : req.params.courseId}});
   const creator = await User.findOne({where : {id : course.creatorId}});
-  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}});
+  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}, order: [['chapterNumber', 'ASC']]});
   console.log(course);
   console.log(chapters);
   res.render("viewCourse", { user: req.user, course: course, creatorName: creator.firstName, chapters : chapters, csrfToken: req.csrfToken()});
@@ -418,10 +418,14 @@ app.get('/dashboard-student/previewCourse/:courseId', connectEnsureLogin.ensureL
 
 app.get('/dashboard-student/viewChapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const chapter = await Chapter.findOne({where : {id : req.params.chapterId}});
-  const pages = await Page.findAll({where : {chapterId : req.params.chapterId}});
+  const course = await Courses.findOne({where : {id : chapter.courseId}});
+  const pages = await Page.findAll({
+    where: { chapterId: req.params.chapterId },
+    order: [['pageNumber', 'ASC']]
+  });
   console.log(chapter);
   console.log(pages);
-  res.render("viewChapter", { user: req.user, chapter: chapter, pages : pages, csrfToken: req.csrfToken()});
+  res.render("viewChapter", { user: req.user, chapter: chapter, pages : pages, course: course, csrfToken: req.csrfToken()});
 })
 
 app.get('/dashboard-student/enroll/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
