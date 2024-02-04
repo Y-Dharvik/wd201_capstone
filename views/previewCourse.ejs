@@ -78,6 +78,14 @@
             .dashboard .button {
                 margin-top: 10px;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -106,8 +114,12 @@
                         
                         <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
                             <h3> Course Name: <a href="#"><%= course.courseName %></a></h3>
+                            <br>
                             <p> Course Description: <%= course.desc %></p>
+                            <br>
                             <p> Course Creator: <%= creatorName %></p>
+                            <br>
+                            <a href="/dashboard-student/enroll/<%= course.id %>" class="btn">Enroll</a>
                         </div>          
                     </div>
                 </div>

@@ -78,6 +78,14 @@
             .dashboard .button {
                 margin-top: 10px;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body class="justify-center">
@@ -102,8 +110,11 @@
                                 <% for(var i=0; i<enroledCourses.length; i++) { %>
                                     <td>
                                         <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="/dashboard-student/viewCourse/<%= enroledCourses[i].id %>" class="underline on-hover:bg-red-800"> Name: <%= enroledCourses[i].courseName %></a></h3>
+                                            <h3> Name: <%= enroledCourses[i].courseName %></h3>
+                                            <br>
                                             <p>Description: <%= enroledCourses[i].desc %></p>
+                                            <br>
+                                            <a href="/dashboard-student/viewCourse/<%= enroledCourses[i].id %>" class="btn">View Course</a>
                                         </div>
                                     </td>
                                 <% } %>
@@ -126,8 +137,11 @@
                                 <% for(var i=0; i<courses.length; i++) { %>
                                     <td>
                                         <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="/dashboard-student/previewCourse/<%= courses[i].id %>" class="underline on-hover:bg-red-800">Name: <%= courses[i].courseName %></a></h3>
+                                            <h3>Name: <%= courses[i].courseName %></h3>
+                                            <br>
                                             <p>Description: <%= courses[i].desc %></p>
+                                            <br>
+                                            <a href="/dashboard-student/previewCourse/<%= courses[i].id %>" class="btn">Preview</a>
                                         </div>
                                     </td>
                                 <% } %>

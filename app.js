@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const path = require("path");
-const { Courses, User, Chapter, Page, Enroll } = require("./models");
+const { Courses, User, Chapter, Page, Enroll, completionStatus } = require("./models");
 const bodyParser = require("body-parser");
 const chapter = require("./models/chapter");
 
@@ -398,19 +398,37 @@ app.post('/dashboard-teacher/editPage/:pageId', connectEnsureLogin.ensureLoggedI
   }
 })
 
+let comp_status = [];
+
 app.get('/dashboard-student/viewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const course = await Courses.findOne({where : {id : req.params.courseId}});
   const creator = await User.findOne({where : {id : course.creatorId}});
   const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}, order: [['chapterNumber', 'ASC']]});
+  let course_progress = 0;
+  let total_pages = 0;
+  for(let i = 0; i < chapters.length; i++){
+    const pages = await Page.findAll({where : {chapterId : chapters[i].id}, order: [['pageNumber', 'ASC']]});
+    
+    for(let j = 0; j < pages.length; j++){
+      const status = await completionStatus.findOne({where : {pageId : pages[j].id}});
+      total_pages += 1;
+      if(status){
+        comp_status[j] = status.status;
+        course_progress += 1;
+      }else{
+        comp_status[j] = false;
+      }
+    }
+  }
   console.log(course);
   console.log(chapters);
-  res.render("viewCourse", { user: req.user, course: course, creatorName: creator.firstName, chapters : chapters, csrfToken: req.csrfToken()});
+  res.render("viewCourse", { user: req.user, course: course, creatorName: creator.firstName, course_progress: course_progress, total_pages: total_pages, chapters : chapters, csrfToken: req.csrfToken()});
 });
 
 app.get('/dashboard-student/previewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const course = await Courses.findOne({where : {id : req.params.courseId}});
   const creator = await User.findOne({where : {id : course.creatorId}});
-  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}});
+  const chapters = await Chapter.findAll({where : {courseId : req.params.courseId}, order: [['chapterNumber', 'ASC']]});
   console.log(course);
   console.log(chapters);
   res.render("previewCourse", { user: req.user, course: course, creatorName: creator.firstName, chapters : chapters, csrfToken: req.csrfToken()});
@@ -423,9 +441,10 @@ app.get('/dashboard-student/viewChapter/:chapterId', connectEnsureLogin.ensureLo
     where: { chapterId: req.params.chapterId },
     order: [['pageNumber', 'ASC']]
   });
+   
   console.log(chapter);
   console.log(pages);
-  res.render("viewChapter", { user: req.user, chapter: chapter, pages : pages, course: course, csrfToken: req.csrfToken()});
+  res.render("viewChapter", { user: req.user, chapter: chapter, pages : pages, course: course, comp_status:comp_status, csrfToken: req.csrfToken()});
 })
 
 app.get('/dashboard-student/enroll/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
@@ -444,6 +463,26 @@ app.get('/dashboard-student/enroll/:courseId', connectEnsureLogin.ensureLoggedIn
   }catch(error){
     console.log(error);
     req.flash("error", "Couldn't Enroll course, Please try again!");
+    return res.status(422).json(error);
+  }
+})
+
+app.get('/dashboard-student/markAsComplete/:chapterId/:pageId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  try{
+    const status = await completionStatus.create({
+      pageId : req.params.pageId,
+      status : true,
+    })
+    const chapter = await Chapter.findOne({where : {id : req.params.chapterId}});
+    if(req.accepts("html")){
+      req.flash("success", "Page Marked as Complete Successfully!");
+      return res.redirect('/dashboard-student/viewCourse/'+chapter.courseId);
+    }else{
+      return res.json(status);
+    }
+  }catch(error){
+    console.log(error);
+    req.flash("error", "Couldn't Mark page as complete, Please try again!");
     return res.status(422).json(error);
   }
 })

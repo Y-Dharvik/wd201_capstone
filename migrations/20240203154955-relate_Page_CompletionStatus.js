@@ -10,23 +10,28 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
 
-    queryInterface.addColumn("Enrolls", "userId", {
+    queryInterface.addColumn('completionStatuses', 'pageId', {
       type: Sequelize.INTEGER,
-      allowNull: false,
       references: {
-        model: "Users",
-        key: "id"
-      }
+        model: 'Pages',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
 
-    queryInterface.addColumn("Enrolls", "courseId", {
-      type: Sequelize.INTEGER,
-      allowNull: false,
+    queryInterface.addConstraint('completionStatuses', {
+      fields: ['pageId'],
+      type: 'foreign key',
+      name: 'custom_fkey_pageId',
       references: {
-        model: "Courses",
-        key: "id"
-      }
+        table: 'Pages',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     });
+
   },
 
   async down (queryInterface, Sequelize) {
@@ -37,7 +42,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    queryInterface.removeColumn("Enrolls", "userId");
-    queryInterface.removeColumn("Enrolls", "courseId");
+    queryInterface.removeConstraint('CompletionStatuses', 'custom_fkey_pageId');
   }
 };

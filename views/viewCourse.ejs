@@ -77,6 +77,14 @@
             .dashboard .button {
                 margin-top: 10px;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -107,6 +115,9 @@
                             <h3> Course Name: <a href="#"><%= course.courseName %></a></h3>
                             <p> Course Description: <%= course.desc %></p>
                             <p> Course Creator: <%= creatorName %></p>
+                            <p> Your Progress: <%= course_progress %> / <%= total_pages %> </p>
+
+                            </p>
                         </div>          
                     </div>
                 </div>
@@ -115,15 +126,20 @@
             <br>
                 <br>
                 <h2>Chapters</h2>
-                <div class="grid grid-cols-3 gap-4">
+                <div class="auto flex grid-cols-3 gap-4">
                     <% if(chapters && chapters.length > 0) { %>
                         <table>
                             <tr>
                                 <% for(var i=0; i<chapters.length; i++) { %>
                                     <td>
                                         <div class="chapter" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="/dashboard-student/viewChapter/<%= chapters[i].id %>" class="underline on-hover:bg-red-800"><%= chapters[i].chapterNumber %> <%= chapters[i].chapterName %></a></h3>
+                                            <h3>Chapter Number: <%= chapters[i].chapterNumber %></h3>
+                                            <br>
+                                            <h3>Chapter Name: <%= chapters[i].chapterName %></h3>
+                                            <br>
                                             <p><%= chapters[i].chapterDesc %></p>
+                                            <br>
+                                            <a href="/dashboard-student/viewChapter/<%= chapters[i].id %>" class="btn">View Pages</a>
                                         </div>
                                     </td>
                                 <% } %>

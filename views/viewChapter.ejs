@@ -87,7 +87,7 @@
                             Back to chapters
                         </a>
                     </li>
-                    <li><a href="/dashboard-student/logout" class="btn">Logout</a></li>
+                    <li><a href="/sign-out" class="btn">Logout</a></li>
                 </ul>
             </div>
             <div class="mb-4 text-center" style="height: 100vh; overflow-y: scroll;">
@@ -97,9 +97,16 @@
                         <div class="page-container">
                             <% for(var i=0; i<pages.length; i++) { %>
                                 <div class="page" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px; margin-bottom: 20px;">
-                                    <h3> Page Number: <a href="/dashboard-student/viewPage/<%= pages[i]._id %>"><%= pages[i].pageNumber %></a></h3>
-                                    <h3> Page Name: <a href="/dashboard-student/viewPage/<%= pages[i]._id %>"><%= pages[i].pageName %></a></h3>
+                                    <h3> Page Number: <%= pages[i].pageNumber %></h3>
+                                    <h3> Page Name: <%= pages[i].pageName %></h3>
                                     <p> Page Content: <%= pages[i].pageContent %></p>
+                                    <br>
+                                    <br>
+                                    <% if(comp_status[i]) { %>
+                                        <p>Marked As Completed</p>
+                                    <% } else { %>
+                                        <a href="/dashboard-student/markAsComplete/<%= chapter.id %>/<%= pages[i].id %>" class="btn">Mark As Complete</a>
+                                    <% } %>
                                 </div>
                             <% } %>
                         </div>
