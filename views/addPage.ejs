@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Learning Management System</title>
-        <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./css/styles.css">
         <style>
             /* Add custom styles here */
             .container {
@@ -68,9 +69,6 @@
             <div class="nav">
                 <ul>
                     <li><a href="/dashboard-teacher">Home</a></li>
-                    <li><a href="/dashboard-teacher/addCourse">Add Course</a></li>
-                    <li><a href="/dashboard-teacher/addChapter">Add Chapter</a></li>
-                    <li><a href="/dashboard-teacher/addPage/<%= chapterId %>">Add Page</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -91,10 +89,9 @@
                             <label for="pageContent">Page Content</label>
                             <textarea name="pageContent" id="pageContent" class="w-full px-2 py-1 border border-gray-400 rounded" rows="10" required></textarea>
                         </div>
-                        <div>
-                            <button type="submit" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Add Page</button>
-                        </div>
-                    
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Add Page</button>
                     </div>
                 </form>
                 <% if(messages && messages.error && messages.error.length > 0)  { %>

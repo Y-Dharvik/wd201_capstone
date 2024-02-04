@@ -59,19 +59,14 @@
             text-decoration: none;
         }
 
-        .recent-announcements {
+        .available-courses {
             margin-bottom: 40px;
         }
 
-        .recent-announcements ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .recent-announcements li {
-            margin-bottom: 10px;
-            background-color: #f9fafb;
-            padding: 10px;
+        .available-courses .course {
+            background-color: #81a1c2;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
         }
 
@@ -79,6 +74,16 @@
             background-color: #f9fafb;
             padding: 20px;
             text-align: center;
+        }
+
+        .btn {
+            background-color: #3182ce;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -97,27 +102,30 @@
             </ul>
         </nav>
 
-        <section class="featured-courses">
-            <h2 class="text-2xl font-bold">Featured Courses</h2>
-            <div class="grid grid-cols-3 gap-4">
-                <!-- <% // courses.forEach(function(course) { %>
-                    <div class="course">
-                        <h3><%= //course.title %></h3>
-                        <p><%= //course.description %></p>
-                        <a href="/courses/<%= //course.id %>" class="text-blue-500">Learn More</a>
-                    </div>
-                <% //}); %> -->
+        <div class="available-courses">
+            <h3>Available Courses</h3>
+            <div class="auto flex grid-cols-2 gap-2">
+                <% if(courses && courses.length > 0) { %>
+                    <table class="table-auto">
+                        <tr>
+                            <% for(var i=0; i<courses.length; i++) { %>
+                                <td>
+                                    <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px; grid-auto-columns: 2fr;">
+                                        <h3>Name: <%= courses[i].courseName %></h3>
+                                        <br>
+                                        <p>Description: <%= courses[i].desc %></p>
+                                        <br>
+                                        <a href="/login" class="btn">Learn More</a>
+                                    </div>
+                                </td>
+                            <% } %>
+                        </tr>
+                    </table>
+                <% } else { %>
+                    <p>No courses found.</p>
+                <% } %>
             </div>
-        </section>
-
-        <section class="recent-announcements">
-            <h2 class="text-2xl font-bold">Recent Announcements</h2>
-            <ul>
-                <!-- <% //announcements.forEach(function(announcement) { %>
-                    <li><%= //announcement.title %></li>
-                <% //}); %> -->
-            </ul>
-        </section>
+        </div>
 
         <footer class="footer">
             <p>&copy; 2022 Learning Management System. All rights reserved.</p>

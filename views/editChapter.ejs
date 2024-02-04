@@ -74,7 +74,6 @@
             </div>
             <div class="chapter-edit">
                 <h2>Edit Chapter</h2>
-                <h3>Chapter id: <%= chapter.id %></h3>
                 
                 <form action='/dashboard-teacher/editChapter/<%= chapter.id %>' method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -104,7 +103,8 @@
                                 <% for(var i=0; i<pages.length; i++) { %>
                                     <td>
                                         <div class="chapter" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                            <h3><a href="#"><%= pages[i].pageNumber %> <%= pages[i].pageName %></a></h3>
+                                            <h3> Page Number: <%= pages[i].pageNumber %></h3>
+                                            <h3> Page Name: <%= pages[i].pageName %></h3>
                                             <a href="/dashboard-teacher/editPage/<%= pages[i].id %>">Edit</a>
                                         </div>
                                     </td>
@@ -115,7 +115,10 @@
                         <p>No Pages found.</p>
                     <% } %>
                 </div>
-                
+
+                <div class="py-2">
+                    <a href="/dashboard-teacher/editCourse/<%= course.id %>" class="w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Back</a>
+                </div>
                 <% if(messages && messages.error && messages.error.length > 0)  { %>
                     <% for(var i=0; i<messages.error.length; i++) { %>
                             <li> <%= messages.error[i] %></li>

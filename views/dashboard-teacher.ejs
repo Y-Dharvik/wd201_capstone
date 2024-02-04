@@ -78,6 +78,16 @@
             .dashboard .button {
                 margin-top: 10px;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -85,7 +95,6 @@
         <nav class="nav">
             <ul>
                 <li><a href="/dashboard-teacher">Home</a></li>
-                <li><a href="/courses">Courses</a></li>
                 <li><a href="/signout">Logout</a></li>
             </ul>
         </nav>
@@ -93,7 +102,7 @@
         <div class="container">
             <div class="dashboard">
                 <h6>Welcome, <%= user.firstName %>!</h6>
-                <a href="/dashboard-teacher/addCourse" class="button">Create a new course</a>
+                <a href="/dashboard-teacher/addCourse" class="btn">Create a new course</a>
             </div>
 
             <div class="my-courses" style="display: flex; flex-wrap: wrap;">
@@ -108,6 +117,7 @@
                                             <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
                                                 <h3> Course Name: <a href="/dashboard-student/viewCourse/<%= courses[i].id %>" class="underline on-hover:bg-red-800"><%= courses[i].courseName %></a></h3><br>
                                                 <p> Course Description: <%= courses[i].desc %></p><br>
+                                                <p> No.of Enrolled Students: <%= enrollmentnumber[i] %></p><br>
                                                 <a href="/dashboard-teacher/editCourse/<%= courses[i].id %>">Edit</a>
                                             </div>
                                         </td>

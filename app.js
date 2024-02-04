@@ -79,14 +79,15 @@ app.use(function(request, response, next) {
 
 app.set("view engine", "ejs");
 app.get("/", async (req, res) => {
+    const courses = await Courses.findAll();
     if(req.isAuthenticated()){
       if(req.user.role == "student"){
-        return res.redirect("/dashboard-student", { user: req.user, courses: Courses });
+        return res.redirect("/dashboard-student", { user: req.user, courses: courses });
       }else if(req.user.role == "teacher"){
-        return res.redirect("/dashboard-teacher", { user: req.user, courses: Courses });
+        return res.redirect("/dashboard-teacher", { user: req.user, courses: courses });
       }
     }
-    res.render("default-page", );
+    res.render("default-page", {courses: courses});
 });
 
 app.get("/signup", function (request, response) {
@@ -198,12 +199,17 @@ app.get('/dashboard-student', connectEnsureLogin.ensureLoggedIn(), async (req, r
   }
 })
 
-app.get('/dashboard-teacher', connectEnsureLogin.ensureLoggedIn(), function(req, res){
-  const courses = Courses.findAll({where : {creatorId : req.user.id}})
-  .then((courses) => {
-    console.log(courses);
-    res.render("dashboard-teacher", { user: req.user, courses: courses, csrfToken: req.csrfToken()});
-  })
+app.get('/dashboard-teacher', connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
+  const courses = await Courses.findAll({where : {creatorId : req.user.id}}, {order: [['id', 'ASC']]});
+  let enrollment = [];
+  for(let i = 0; i < courses.length; i++){
+    const enrolls = await Enroll.findAll({where : {courseId : courses[i].id}});
+    enrollment.push(enrolls.length);
+  }
+  console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+  console.log(enrollment)
+  console.log(courses);
+  res.render("dashboard-teacher", { user: req.user, courses: courses, enrollmentnumber : enrollment, csrfToken: req.csrfToken()});
 })
 
 app.get('/dashboard-teacher/addCourse', connectEnsureLogin.ensureLoggedIn(), function(req, res){
@@ -228,7 +234,7 @@ app.post('/dashboard-teacher/addCourse', async(req, res) => {
 
 app.get('/dashboard-teacher/editCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const courses = await Courses.findOne({where : {id : req.params.courseId}});
-  const chapters = await Chapter.findAll({where : {id : req.params.courseId}});
+  const chapters = await Chapter.findAll({where : {courseId : courses.id}, order: [['chapterNumber', 'ASC']]});
   console.log(courses);
   console.log(chapters);
   res.render("editCourse", { user: req.user, courses: courses, chapters : chapters, csrfToken: req.csrfToken()});
@@ -300,10 +306,11 @@ app.post('/dashboard-teacher/addChapter/:courseId', connectEnsureLogin.ensureLog
 
 app.get('/dashboard-teacher/editChapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const chapter = await Chapter.findOne({where : {id : req.params.chapterId}});
-  const pages = await Page.findAll({where : {chapterId : req.params.chapterId}});
+  const course = await Courses.findOne({where : {id : chapter.courseId}});
+  const pages = await Page.findAll({where : {chapterId : req.params.chapterId}, order: [['pageNumber', 'ASC']]});
   console.log(chapter);
   console.log(pages);
-  res.render("editChapter", { user: req.user, chapter: chapter, pages : pages, csrfToken: req.csrfToken()});
+  res.render("editChapter", { user: req.user, course: course, chapter: chapter, pages : pages, csrfToken: req.csrfToken()});
 })
 
 app.post('/dashboard-teacher/editChapter/:chapterId', async(req, res) => {
