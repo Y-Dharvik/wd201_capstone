@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      completionStatus.belongsTo(models.Page, {
+        foreignKey: "pageId",
+      });
     }
   }
   completionStatus.init(
