@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Chapter.belongsTo(models.Courses, { 
         foreignKey: "courseId" 
       });
+
+      Chapter.hasMany(models.Page, {
+        foreignKey: "chapterId"
+      });
     }
   }
   Chapter.init({

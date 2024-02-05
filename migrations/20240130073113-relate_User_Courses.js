@@ -14,7 +14,7 @@ module.exports = {
         {
           type: Sequelize.INTEGER,
           references: {
-            model: {tableName: "User"},
+            model: {tableName: "Users"},
             key: "id"
           },
         }
@@ -25,7 +25,7 @@ module.exports = {
         type: "foreign key",
         name: "custom_fkey_constraint_creatorId",
         references: {
-          table: "User",
+          table: "Users",
           field: "id"
         },
       });

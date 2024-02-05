@@ -4,11 +4,12 @@
   "description": "WD201 course final capstone project",
   "main": "index.js",
   "scripts": {
-    "pretest": "set NODE_ENV=test&&  npx sequelize-cli db:drop&& set NODE_ENV=test&&  npx sequelize-cli db:create",
-    "test": "set NODE_ENV=test&&  jest --detectOpenHandles",
-    "prepare": "husky install",
+    "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
+    "pretest": "NODE_ENV=test sequelize-cli db:drop && NODE_ENV=test sequelize-cli db:create && NODE_ENV=test sequelize-cli db:migrate",
+    "test": "NODE_ENV=test jest --detectOpenHandles",
     "start": "nodemon app.js",
-    "dev": "set NODE_ENV=development&& nodemon -e js,ejs,html,css"
+    "dev": "set NODE_ENV=development&& nodemon -e js,ejs,html,css",
+    "prepare": "husky install wd201_capstone/.husky"
   },
   "author": "Dharvik <dharvik.yerramshetty@gmail.com>",
   "license": "ISC",
@@ -36,11 +37,23 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.0",
     "jest": "^29.7.0",
-    "lint-staged": "^15.2.0",
+    "lint-staged": "^15.2.1",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.4",
     "sequelize-cli": "^6.6.2",
     "supertest": "^6.3.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write ."
+    ]
   }
 }

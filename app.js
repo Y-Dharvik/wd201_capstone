@@ -295,7 +295,7 @@ app.post('/dashboard-teacher/addChapter/:courseId', connectEnsureLogin.ensureLog
       req.flash("success", "Chapter Added Successfully!");
       return res.redirect("/dashboard-teacher/editCourse/" + req.params.courseId);
     }else{
-      return res.json(course);
+      return res.json(chapter);
     }
   }catch(error){
     console.log(error);
@@ -497,3 +497,5 @@ app.get('/dashboard-student/markAsComplete/:chapterId/:pageId', connectEnsureLog
 app.listen(port, () => {
   console.log(`Capstone Project listening at http://localhost:${port}`)
 })
+
+module.exports = app;
