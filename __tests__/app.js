@@ -136,5 +136,6 @@ describe("Test Features of Educator", () => {
     expect(response.statusCode).toBe(403);
     expect(response.body.message).toBe("Chapter Added Successfully!");
     expect(response.body.chapter).toHaveProperty("chapterNumber", 1);
+    
   });
 });
