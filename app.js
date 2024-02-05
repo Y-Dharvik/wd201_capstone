@@ -239,6 +239,7 @@ app.get(
       { order: [["id", "ASC"]] },
     );
     let enrollment = [];
+    const total_users = await User.findAll({ where: { role: "student" } });
     for (let i = 0; i < courses.length; i++) {
       const enrolls = await Enroll.findAll({
         where: { courseId: courses[i].id },
@@ -252,6 +253,7 @@ app.get(
       user: req.user,
       courses: courses,
       enrollmentnumber: enrollment,
+      total_users: total_users.length,
       csrfToken: req.csrfToken(),
     });
   },
