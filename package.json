@@ -9,7 +9,7 @@
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "start": "nodemon index.js",
     "dev": "set NODE_ENV=development&& nodemon -e js,ejs,html,css",
-    "prepare": "husky install /.husky"
+    "prepare": "husky install"
   },
   "author": "Dharvik <dharvik.yerramshetty@gmail.com>",
   "license": "ISC",
