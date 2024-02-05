@@ -81,7 +81,7 @@
             </div>
             <div class="nav">
                 <ul>
-                    <li><a href="/dashboard-student" class="btn">Dashboard</a></li>
+                    <li><a href="<%= user.role === 'teacher' ? '/dashboard-teacher' : '/dashboard-student' %>" class="btn">Dashboard</a></li>
                     <li>
                         <a href="/dashboard-student/viewCourse/<%= course.id %>" class="btn">
                             Back to chapters
@@ -102,10 +102,12 @@
                                     <p> Page Content: <%= pages[i].pageContent %></p>
                                     <br>
                                     <br>
-                                    <% if(comp_status[i]) { %>
-                                        <p>Marked As Completed</p>
-                                    <% } else { %>
-                                        <a href="/dashboard-student/markAsComplete/<%= chapter.id %>/<%= pages[i].id %>" class="btn">Mark As Complete</a>
+                                    <% if(user.role === 'student') { %>
+                                        <% if(comp_status[i]) { %>
+                                            <p>Marked As Completed</p>
+                                        <% } else { %>
+                                            <a href="/dashboard-student/markAsComplete/<%= chapter.id %>/<%= pages[i].id %>" class="btn">Mark As Complete</a>
+                                        <% } %>
                                     <% } %>
                                 </div>
                             <% } %>

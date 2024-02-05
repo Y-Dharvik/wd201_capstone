@@ -115,8 +115,9 @@
                             <h3> Course Name: <a href="#"><%= course.courseName %></a></h3>
                             <p> Course Description: <%= course.desc %></p>
                             <p> Course Creator: <%= creatorName %></p>
-                            <p> Your Progress: <%= course_progress %> / <%= total_pages %> </p>
-
+                            <% if((user.role === 'student')){ %>
+                                <p> Your Progress: <%= course_progress %> / <%= total_pages %> </p>
+                            <% } %>
                             </p>
                         </div>          
                     </div>

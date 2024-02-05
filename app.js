@@ -598,7 +598,7 @@ app.get(
     res.render("viewCourse", {
       user: req.user,
       course: course,
-      creatorName: creator.firstName,
+      creatorName: creator.firstName + " " + creator.lastName,
       course_progress: course_progress,
       total_pages: total_pages,
       chapters: chapters,

@@ -115,10 +115,10 @@
                                     <% for(var i=0; i<courses.length; i++) { %>
                                         <td style="padding-right: 20px;">
                                             <div class="course" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
-                                                <h3> Course Name: <a href="/dashboard-student/viewCourse/<%= courses[i].id %>" class="underline on-hover:bg-red-800"><%= courses[i].courseName %></a></h3><br>
+                                                <h3> Course Name: <%= courses[i].courseName %></h3><br>
                                                 <p> Course Description: <%= courses[i].desc %></p><br>
                                                 <p> No.of Enrolled Students: <%= enrollmentnumber[i] %></p><br>
-                                                <a href="/dashboard-teacher/editCourse/<%= courses[i].id %>">Edit</a>
+                                                <a href="/dashboard-teacher/editCourse/<%= courses[i].id %>" class="btn">Edit</a>&nbsp;&nbsp;<a href="/dashboard-student/viewCourse/<%= courses[i].id %>" class="btn">View</a>
                                             </div>
                                         </td>
                                     <% } %>
