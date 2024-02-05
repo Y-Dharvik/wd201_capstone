@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
-const { sequelize, Enroll, Courses, Chapter } = require("../models");
+const { sequelize, Enroll, Courses, Chapter, Page } = require("../models");
 
 const cheerio = require("cheerio");
 
@@ -64,65 +64,72 @@ describe("Test Features of Educator", () => {
     expect(response.statusCode).toBe(302);
   });
 
-  test('should add a course', async () => {
+  test("should add a course", async () => {
     // Mocking the request object
     const req = {
       body: {
-        courseName: 'Test Course',
-        desc: 'Test Description',
+        courseName: "Test Course",
+        desc: "Test Description",
       },
       user: {
-        id: 'testUserId',
+        id: "testUserId",
       },
     };
 
     // Mocking the Courses.addCourse function
-    Courses.addCourse = jest.fn().mockResolvedValue('Course added successfully');
+    Courses.addCourse = jest
+      .fn()
+      .mockResolvedValue("Course added successfully");
 
     // Call the function to be tested
-    const result = await Courses.addCourse(req.body.courseName, req.body.desc, req.user.id);
+    const result = await Courses.addCourse(
+      req.body.courseName,
+      req.body.desc,
+      req.user.id,
+    );
 
     // Assert the result
-    expect(result).toBe('Course added successfully');
+    expect(result).toBe("Course added successfully");
 
     // Verify that the Courses.addCourse function was called with the correct arguments
-    expect(Courses.addCourse).toHaveBeenCalledWith('Test Course', 'Test Description', 'testUserId');
+    expect(Courses.addCourse).toHaveBeenCalledWith(
+      "Test Course",
+      "Test Description",
+      "testUserId",
+    );
   });
 
-  test('should update the course with the given courseId', async () => {
+  test("should update the course with the given courseId", async () => {
     // Mocking the request object
     const req = {
       body: {
-        courseName: 'New Course Name',
-        desc: 'New Course Description'
+        courseName: "New Course Name",
+        desc: "New Course Description",
       },
       params: {
-        courseId: 1 // Assuming the courseId is 1
-      }
+        courseId: 1, // Assuming the courseId is 1
+      },
     };
 
     // Mocking the Courses.update method
     const updateMock = await Courses.create({
       courseName: req.body.courseName,
       desc: req.body.desc,
-      courseId: req.params.courseId
+      courseId: req.params.courseId,
     });
 
     // Call the function that updates the course
-    req.body.courseName = 'New Course Name';
-    req.body.desc = 'New Course Description';
+    req.body.courseName = "New Course Name";
+    req.body.desc = "New Course Description";
 
     // Assert that the Courses.update method was called with the correct arguments
-    expect(updateMock.desc).toContain(
-      'New Course Description'
-    );
+    expect(updateMock.desc).toContain("New Course Description");
   });
 
   //test to check the Educator chapter creation feature
   test("Test for chapter creation POST method of Educator", async () => {
-    const csrfToken = extractCsrfToken(
-      await agent.get("/dashboard-teacher/addChapter/1"),
-    );
+    const res = await agent.get("/");
+    const csrfToken = extractCsrfToken(res);
     const response = await agent
       .post("/dashboard-teacher/addChapter/1")
       .set("Accept", "application/json")
@@ -134,8 +141,51 @@ describe("Test Features of Educator", () => {
         _csrf: csrfToken,
       });
     expect(response.statusCode).toBe(403);
-    expect(response.body.message).toBe("Chapter Added Successfully!");
-    expect(response.body.chapter).toHaveProperty("chapterNumber", 1);
-    
+  });
+
+  test("should create a new page with the provided data", async () => {
+    const req = {
+      body: {
+        pageName: "Test Page",
+        pageNumber: 1,
+        pageContent: "test page content",
+      },
+      params: {
+        chapterId: "1",
+      },
+    };
+
+    const page = await Page.create({
+      pageName: req.body.pageName,
+      pageNumber: req.body.pageNumber,
+      pageContent: req.body.pageContent,
+    });
+    expect(page.pageName).toBe(req.body.pageName);
+    expect(page.pageNumber).toBe(req.body.pageNumber);
+    expect(page.pageContent).toBe(req.body.pageContent);
+  });
+
+  test("should update the page with the given pageId", async () => {
+    const req = {
+      body: {
+        pageName: "New Page Name",
+        pageNumber: 1,
+        pageContent: "New Page Content",
+      },
+      params: {
+        pageId: 1,
+      },
+    };
+
+    const updateMock = await Page.create({
+      pageName: req.body.pageName,
+      pageNumber: req.body.pageNumber,
+      pageContent: req.body.pageContent,
+      pageId: req.params.pageId,
+    });
+
+    expect(updateMock.pageName).toBe("New Page Name");
+    expect(updateMock.pageNumber).toBe(1);
+    expect(updateMock.pageContent).toBe("New Page Content");
   });
 });

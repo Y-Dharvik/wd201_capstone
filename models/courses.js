@@ -1,4 +1,3 @@
-
 // 'use strict';
 // const {
 //   Model
@@ -14,8 +13,8 @@
 //      */
 //     models.Courses.associate = (models) => {
 //       // define association here
-//       Courses.belongsTo(models.Users, { 
-//         foreignKey: "creatorId", through: "Courses", 
+//       Courses.belongsTo(models.Users, {
+//         foreignKey: "creatorId", through: "Courses",
 //       });
 //     }
 //   }

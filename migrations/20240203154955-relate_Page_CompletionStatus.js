@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add altering commands here.
      *
@@ -10,31 +10,30 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
 
-    queryInterface.addColumn('completionStatuses', 'pageId', {
+    queryInterface.addColumn("completionStatuses", "pageId", {
       type: Sequelize.INTEGER,
       references: {
-        model: 'Pages',
-        key: 'id'
+        model: "Pages",
+        key: "id",
       },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     });
 
-    queryInterface.addConstraint('completionStatuses', {
-      fields: ['pageId'],
-      type: 'foreign key',
-      name: 'custom_fkey_pageId',
+    queryInterface.addConstraint("completionStatuses", {
+      fields: ["pageId"],
+      type: "foreign key",
+      name: "custom_fkey_pageId",
       references: {
-        table: 'Pages',
-        field: 'id'
+        table: "Pages",
+        field: "id",
       },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
+      onDelete: "cascade",
+      onUpdate: "cascade",
     });
-
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
@@ -42,6 +41,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    queryInterface.removeConstraint('CompletionStatuses', 'custom_fkey_pageId');
-  }
+    queryInterface.removeConstraint("CompletionStatuses", "custom_fkey_pageId");
+  },
 };
