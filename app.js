@@ -711,4 +711,53 @@ app.get(
   },
 );
 
+app.get(
+  "/my-account",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    res.render("my-account", { user: req.user, csrfToken: req.csrfToken() });
+  },
+);
+
+app.post(
+  "/my-account",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    //user can change his password
+    if (req.body.password.length < 1) {
+      req.flash("error", "Your Password must be atleast 2 characters long!");
+      return res.redirect("/my-account");
+    }
+    if (req.body.password === req.body.newPassword) {
+      req.flash("error", "New Password cannot be same as old password!");
+      return res.redirect("/my-account");
+    }
+    try {
+      const hashedPassword = await bcrypt.hash(
+        req.body.newPassword,
+        saltRounds,
+      );
+      const user = await User.update(
+        { password: hashedPassword },
+        { where: { id: req.user.id } },
+      );
+      if (req.accepts("html")) {
+        req.flash("success", "Password Updated");
+        console.log("User role: ", req.user.role);
+        if (req.user.role === "student") {
+          return res.redirect("/dashboard-student");
+        } else {
+          return res.redirect("/dashboard-teacher");
+        }
+      } else {
+        return res.status(200).json({ user, message: "Password Updated" });
+      }
+    } catch (error) {
+      console.log(error);
+      req.flash("error", "Couldn't Change password, Please try again!");
+      return res.status(422).json(error);
+    }
+  },
+);
+
 module.exports = app;

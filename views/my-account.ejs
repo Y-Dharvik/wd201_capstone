@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        /* Add custom styles here */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nav {
+            background-color: #f9fafb;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav li {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Learning Management System</h1>
+        </header>
+
+        <nav class="nav">
+            <ul>
+                <li><a href=" <% if(user.role === 'teacher') { %>
+                                    /dashboard-teacher 
+                            <% } else { %> 
+                                /dashboard-student 
+                            <% } %> " class="text-blue-500">Dashboard</a></li>
+                <li><a href="/signout" class="text-blue-500">Logout</a></li>
+            </ul>
+        </nav>
+
+    <div class = "grid grid-cols-6">
+        <div class = "col-start-3 col-span-2">
+            <h6 class = "py-4 text-center text-2xl">
+                Update Password
+            </h6>
+            <form action = "/my-account" method = "POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class = "py-2">
+                    <label for = "firstName">First Name</label>
+                    <input type = "text" name = "firstName" id = "firstName" value=" <%= user.firstName %>
+                    " class = "w-full px-2 py-1 border border-gray-400 rounded" required readonly>
+                </div>
+                <div class = "py-2">
+                    <label for = "lastName">Last Name</label>
+                    <input type = "text" name = "lastName" id = "lastName" value=" <%= user.lastName %>
+                    " class = "w-full px-2 py-1 border border-gray-400 rounded">
+                </div>
+                <div class = "py-2">
+                    <label for = "email">Email</label>
+                    <input type = "email" name = "email" id = "email" value="<%= user.email %>" class = "w-full px-2 py-1 border border-gray-400 rounded" required readonly>
+                </div>
+                <div class = "py-2">
+                    <label for = "password"> Old Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter old Password" class="w-full px-2 py-1 border border-gray-400 rounded" required>
+                </div>
+                <div class = "py-2">
+                    <label for = "newPassword">New Password</label>
+                    <input type = "password" name = "newPassword" id = "newPassword" placeholder="Enter new Password" class = "w-full px-2 py-1 border border-gray-400 rounded" required>
+                <div class = "py-2">
+                    <label for = "role">Role</label>
+                    <input type = "text" name = "role" id = "role" value="<%= user.role %>" class = "w-full px-2 py-1 border border-gray-400 rounded" required readonly>
+                <div class = "py-2">
+                    <button type = "submit" class = "w-full px-2 py-1 bg-blue-500 rounded text-white hover:bg-blue-800">Update</button>
+                </div>
+            </form>
+            <% if(messages && messages.error && messages.error.length > 0)  { %>
+                <% for(var i=0; i<messages.error.length; i++) { %>
+                        <li> <%= messages.error[i] %></li>
+                <% } %>
+              <% } %>
+
+            <% if(messages && messages.success && messages.success.length > 0)  { %>
+                <% for(var i=0; i<messages.success.length; i++) { %>
+                        <li> <%= messages.success[i] %></li>
+                <% } %>
+              <% } %>
+
+        </div>
+</body>
+</html>
