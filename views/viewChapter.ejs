@@ -81,7 +81,7 @@
             </div>
             <div class="nav">
                 <ul>
-                    <li><a href="<%= user.role === 'teacher' ? '/dashboard-teacher' : '/dashboard-student' %>" class="btn">Dashboard</a></li>
+                    <li><a href="<%= user.type === 'teacher' ? '/dashboard-teacher' : '/dashboard-student' %>" class="btn">Dashboard</a></li>
                     <li>
                         <a href="/dashboard-student/viewCourse/<%= course.id %>" class="btn">
                             Back to chapters
@@ -102,7 +102,7 @@
                                     <p> Page Content: <%= pages[i].pageContent %></p>
                                     <br>
                                     <br>
-                                    <% if(user.role === 'student') { %>
+                                    <% if(user.type === 'student') { %>
                                         <% if(comp_status[i]) { %>
                                             <p>Marked As Completed</p>
                                         <% } else { %>

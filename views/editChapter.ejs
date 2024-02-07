@@ -59,6 +59,14 @@
                 color: #3182ce;
                 text-decoration: none;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -96,7 +104,7 @@
                 </form>
 
                 <h2 class="text-2xl mb-4">Pages in this chapter</h2>
-                <div class="grid grid-cols-3 gap-4">
+                <div class="auto flex grid-cols-3 gap-4">
                     <% if(pages && pages.length > 0) { %>
                         <table>
                             <tr>
@@ -104,8 +112,10 @@
                                     <td>
                                         <div class="chapter" style="background-color: #81a1c2; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;">
                                             <h3> Page Number: <%= pages[i].pageNumber %></h3>
+                                            <br>
                                             <h3> Page Name: <%= pages[i].pageName %></h3>
-                                            <a href="/dashboard-teacher/editPage/<%= pages[i].id %>">Edit</a>
+                                            <br>
+                                            <a href="/dashboard-teacher/editPage/<%= pages[i].id %>" class="btn">Edit</a>
                                         </div>
                                     </td>
                                 <% } %>

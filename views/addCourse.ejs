@@ -5,9 +5,48 @@
         <meta name = "csrf-token" content = "<%= csrfToken %>">
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="./css/styles.css">
-        <title>Document</title>
+        <title>Learning Management System</title>
+        <style>
+            /* Add custom styles here */
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                background-color: #f9fafb;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav li {
+                margin-right: 10px;
+            }
+        </style>
     </head>
     <body>
+        <div class="header">
+            <h1>Learning Management System</h1>
+        </div>
+        <div class="nav">
+            <ul>
+                <li><a href="/dashboard-teacher">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
         <div class = "grid grid-cols-6">
             <div class = "col-start-3 col-span-2">
                 <%- include('header.ejs') %>

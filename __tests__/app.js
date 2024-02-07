@@ -45,7 +45,7 @@ describe("Test Features of Educator", () => {
         lastname: "test",
         email: "test@gmail.com",
         password: "testtesttest",
-        role: "educator",
+        type: "educator",
         _csrf: csrfToken,
       });
     expect(response.statusCode).toBe(404);

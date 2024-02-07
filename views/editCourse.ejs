@@ -59,6 +59,14 @@
                 color: #3182ce;
                 text-decoration: none;
             }
+
+            .btn {
+                background-color: #3182ce;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -74,7 +82,6 @@
             </div>
             <div class="course-edit">
                 <h2>Edit Course</h2>
-                <h3>Course id: <%= courses.id %></h3>
                 
                 <form action='/dashboard-teacher/editCourse/<%= courses.id %>' method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -109,7 +116,7 @@
                                             <br>
                                             <p><%= chapters[i].chapterDesc %></p>
                                             <br>
-                                            <a href="/dashboard-teacher/editChapter/<%= chapters[i].id %>">Edit</a>
+                                            <a href="/dashboard-teacher/editChapter/<%= chapters[i].id %>" class="btn">Edit</a>
                                         </div>
                                     </td>
                                 <% } %>

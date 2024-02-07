@@ -93,12 +93,12 @@ app.set("view engine", "ejs");
 app.get("/", async (req, res) => {
   const courses = await Courses.findAll();
   if (req.isAuthenticated()) {
-    if (req.user.role == "student") {
+    if (req.user.type == "student") {
       return res.redirect("/dashboard-student", {
         user: req.user,
         courses: courses,
       });
-    } else if (req.user.role == "teacher") {
+    } else if (req.user.type == "teacher") {
       return res.redirect("/dashboard-teacher", {
         user: req.user,
         courses: courses,
@@ -138,7 +138,7 @@ app.post("/users", async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      role: req.body.role,
+      type: req.body.type,
       password: hashedPassword,
     });
     req.login(user, (err) => {
@@ -146,9 +146,9 @@ app.post("/users", async (req, res) => {
         return res.status(422).json(err);
       }
       if (req.accepts("html")) {
-        if (req.user.role == "student") {
+        if (req.user.type == "student") {
           return res.redirect("/dashboard-student");
-        } else if (req.user.role == "teacher") {
+        } else if (req.user.type == "teacher") {
           return res.redirect("/dashboard-teacher");
         }
       } else {
@@ -175,7 +175,7 @@ app.post(
   async (request, response) => {
     try {
       console.log(request.user);
-      if (request.user.role == "student") {
+      if (request.user.type == "student") {
         return response.redirect("/dashboard-student");
       } else {
         return response.redirect("/dashboard-teacher");
@@ -239,7 +239,7 @@ app.get(
       { order: [["id", "ASC"]] },
     );
     let enrollment = [];
-    const total_users = await User.findAll({ where: { role: "student" } });
+    const total_users = await User.findAll({ where: { type: "student" } });
     for (let i = 0; i < courses.length; i++) {
       const enrolls = await Enroll.findAll({
         where: { courseId: courses[i].id },
@@ -743,8 +743,8 @@ app.post(
       );
       if (req.accepts("html")) {
         req.flash("success", "Password Updated");
-        console.log("User role: ", req.user.role);
-        if (req.user.role === "student") {
+        console.log("User type: ", req.user.type);
+        if (req.user.type === "student") {
           return res.redirect("/dashboard-student");
         } else {
           return res.redirect("/dashboard-teacher");

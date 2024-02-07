@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "test@123",
-    "database": "capstone_db_dev",
+    "database": "capstone_db_dev2",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

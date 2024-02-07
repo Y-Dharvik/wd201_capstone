@@ -92,7 +92,7 @@
         <%- include('header.ejs') %>
         <nav class="nav">
             <ul>
-                <li><a href="<% if(user.role === 'teacher') { %>
+                <li><a href="<% if(user.type === 'teacher') { %>
                         /dashboard-teacher
                     <% } else { %>
                         /dashboard-student
@@ -166,7 +166,7 @@
                 <% } %>
         </div>
         <div class="dashboard justify-left">
-            <a href="<% if(user.role === 'teacher') { %>
+            <a href="<% if(user.type === 'teacher') { %>
                         /dashboard-teacher
                     <% } else { %>
                         /dashboard-student

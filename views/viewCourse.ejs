@@ -91,7 +91,7 @@
         <%- include('header.ejs') %>
         <nav class="nav">
             <ul>
-                <li><a href="<% if(user.role === 'teacher') { %>
+                <li><a href="<% if(user.type === 'teacher') { %>
                         /dashboard-teacher
                     <% } else { %>
                         /dashboard-student
@@ -115,7 +115,7 @@
                             <h3> Course Name: <a href="#"><%= course.courseName %></a></h3>
                             <p> Course Description: <%= course.desc %></p>
                             <p> Course Creator: <%= creatorName %></p>
-                            <% if((user.role === 'student')){ %>
+                            <% if((user.type === 'student')){ %>
                                 <p> Your Progress: <%= course_progress %> / <%= total_pages %> </p>
                             <% } %>
                             </p>
@@ -166,12 +166,12 @@
                 <% } %>
         </div>
         <div class="dashboard justify-left">
-            <a href="<% if(user.role === 'teacher') { %>
+            <a href="<% if(user.type === 'teacher') { %>
                         /dashboard-teacher
                     <% } else { %>
                         /dashboard-student
                     <% } %>
-                    " class="button justify-left">Back</a>
+                    " class="btn justify-left">Back</a>
         </div>
     </body>
 </html>

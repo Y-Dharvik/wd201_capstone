@@ -74,7 +74,6 @@
             </div>
             <div class="chapter-edit">
                 <h2>Edit Page</h2>
-                <h3>Page id: <%= page.id %></h3>
                 
                 <form action='/dashboard-teacher/editPage/<%= page.id %>' method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
