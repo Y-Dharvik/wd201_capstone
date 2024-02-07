@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       completionStatus.belongsTo(models.Page, {
         foreignKey: "pageId",
       });
+
+      completionStatus.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
   }
   completionStatus.init(

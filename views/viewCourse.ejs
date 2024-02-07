@@ -116,7 +116,7 @@
                             <p> Course Description: <%= course.desc %></p>
                             <p> Course Creator: <%= creatorName %></p>
                             <% if((user.type === 'student')){ %>
-                                <p> Your Progress: <%= course_progress %> / <%= total_pages %> </p>
+                                <p> Your Progress: <%= (course_progress / total_pages) * 100 %>% </p>
                             <% } %>
                             </p>
                         </div>          

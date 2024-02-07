@@ -602,7 +602,7 @@ app.get(
 
       for (let j = 0; j < pages.length; j++) {
         const status = await completionStatus.findOne({
-          where: { pageId: pages[j].id },
+          where: { pageId: pages[j].id, userId: req.user.id },
         });
         total_pages += 1;
         if (status) {
@@ -711,6 +711,7 @@ app.get(
     try {
       const status = await completionStatus.create({
         pageId: req.params.pageId,
+        userId: req.user.id,
         status: true,
       });
       const chapter = await Chapter.findOne({

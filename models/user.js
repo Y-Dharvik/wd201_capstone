@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Enroll, {
         foreignKey: "userId",
       });
+
+      User.hasMany(models.completionStatus, {
+        foreignKey: "userId",
+      });
     }
   }
   User.init(
