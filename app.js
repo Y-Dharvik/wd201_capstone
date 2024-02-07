@@ -197,12 +197,26 @@ app.get("/signout", function (req, res, next) {
   });
 });
 
+let course_isEnroled = [];
+
 app.get(
   "/dashboard-student",
   connectEnsureLogin.ensureLoggedIn(),
   async (req, res) => {
     // student has to see all the available courses created by all the teachers
     const courses = await Courses.findAll();
+    let course_isEnroled = [];
+    for (let i = 0; i < courses.length; i++) {
+      const enrolls = await Enroll.findOne({
+        where: { courseId: courses[i].id, userId: req.user.id },
+      });
+      console.log(enrolls);
+      if (enrolls) {
+        course_isEnroled.push(enrolls.isEnrolled);
+      } else {
+        course_isEnroled.push(false);
+      }
+    }
     console.log("courses found");
     const enroledCourses = await Enroll.findAll({
       where: { userId: req.user.id, isEnrolled: true },
@@ -219,6 +233,7 @@ app.get(
       res.render("dashboard-student", {
         user: req.user,
         courses: courses,
+        course_isEnroled: course_isEnroled,
         enroledCourses: enroledCoursesDetails,
         csrfToken: req.csrfToken(),
       });
@@ -626,6 +641,7 @@ app.get(
     res.render("previewCourse", {
       user: req.user,
       course: course,
+      course_isEnroled: course_isEnroled,
       creatorName: creator.firstName,
       chapters: chapters,
       csrfToken: req.csrfToken(),
