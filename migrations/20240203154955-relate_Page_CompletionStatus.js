@@ -41,6 +41,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    queryInterface.removeConstraint("CompletionStatuses", "custom_fkey_pageId");
+    queryInterface.removeConstraint("completionStatuses", "custom_fkey_pageId");
   },
 };
