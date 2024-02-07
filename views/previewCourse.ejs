@@ -119,7 +119,7 @@
                             <br>
                             <p> Course Creator: <%= creatorName %></p>
                             <br>
-                            <% if(!course_isEnroled) { %>
+                            <% if(!course_isEnroled[course.id - 1]) { %>
                                 <a href="/dashboard-student/enroll/<%= course.id %>" class="btn">Enroll</a>
                             <% } else { %>
                                 <a href="#" class="btn">Already Enrolled</a>

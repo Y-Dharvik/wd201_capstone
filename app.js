@@ -204,19 +204,22 @@ app.get(
   connectEnsureLogin.ensureLoggedIn(),
   async (req, res) => {
     // student has to see all the available courses created by all the teachers
-    const courses = await Courses.findAll();
-    let course_isEnroled = [];
+    const courses = await Courses.findAll({
+      order: [["id", "ASC"]],
+    });
     for (let i = 0; i < courses.length; i++) {
       const enrolls = await Enroll.findOne({
         where: { courseId: courses[i].id, userId: req.user.id },
       });
+      console.log("enrolls: +++++++++++++++++++++++++++++++++++");
       console.log(enrolls);
       if (enrolls) {
-        course_isEnroled.push(enrolls.isEnrolled);
+        course_isEnroled[i] = enrolls.isEnrolled;
       } else {
-        course_isEnroled.push(false);
+        course_isEnroled[i] = false;
       }
     }
+    console.log(course_isEnroled);
     console.log("courses found");
     const enroledCourses = await Enroll.findAll({
       where: { userId: req.user.id, isEnrolled: true },
@@ -638,6 +641,8 @@ app.get(
     });
     console.log(course);
     console.log(chapters);
+    console.log("_______________________");
+    console.log(course_isEnroled);
     res.render("previewCourse", {
       user: req.user,
       course: course,
