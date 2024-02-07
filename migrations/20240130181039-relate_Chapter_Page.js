@@ -16,8 +16,6 @@ module.exports = {
         model: "Chapters",
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
 
     await queryInterface.addConstraint("Pages", {
@@ -28,8 +26,6 @@ module.exports = {
         table: "Chapters",
         field: "id",
       },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
 

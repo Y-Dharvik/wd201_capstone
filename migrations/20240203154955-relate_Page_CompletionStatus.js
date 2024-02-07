@@ -10,17 +10,15 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
 
-    queryInterface.addColumn("completionStatuses", "pageId", {
+    await queryInterface.addColumn("completionStatuses", "pageId", {
       type: Sequelize.INTEGER,
       references: {
         model: { tableName: "Pages" },
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
 
-    queryInterface.addConstraint("completionStatuses", {
+    await queryInterface.addConstraint("completionStatuses", {
       fields: ["pageId"],
       type: "foreign key",
       name: "custom_fkey_pageId",
@@ -28,8 +26,6 @@ module.exports = {
         table: "Pages",
         field: "id",
       },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
 
@@ -41,6 +37,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    queryInterface.removeConstraint("completionStatuses", "custom_fkey_pageId");
+    await queryInterface.removeColumn("completionStatuses", "pageId");
   },
 };

@@ -13,23 +13,18 @@ module.exports = {
     await queryInterface.addColumn("Enrolls", "courseId", {
       type: Sequelize.INTEGER,
       references: {
-        model: "Courses",
+        model: { tableName: "Courses" },
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
 
     await queryInterface.addConstraint("Enrolls", {
       fields: ["courseId"],
       type: "foreign key",
-      name: "custom_fkey_courseId",
       references: {
         table: "Courses",
         field: "id",
       },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
 
@@ -40,6 +35,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeConstraint("Enrolls", "custom_fkey_courseId");
+    queryInterface.removeColumn("Enrolls", "courseId");
   },
 };

@@ -16,20 +16,15 @@ module.exports = {
         model: { tableName: "Users" },
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
 
     await queryInterface.addConstraint("Enrolls", {
       fields: ["userId"],
       type: "foreign key",
-      name: "custom_fkey_userId",
       references: {
         table: "Users",
         field: "id",
       },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
 
@@ -40,6 +35,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeConstraint("Enrolls", "custom_fkey_userId");
+    await queryInterface.removeColumn("Enrolls", "userId");
   },
 };

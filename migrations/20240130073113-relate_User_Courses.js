@@ -36,11 +36,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-
-    await queryInterface.removeConstraint(
-      "Courses",
-      "custom_fkey_constraint_creatorId",
-    );
     await queryInterface.removeColumn("Courses", "creatorId");
   },
 };
