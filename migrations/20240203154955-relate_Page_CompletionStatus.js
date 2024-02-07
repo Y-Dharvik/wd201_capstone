@@ -13,7 +13,7 @@ module.exports = {
     queryInterface.addColumn("completionStatuses", "pageId", {
       type: Sequelize.INTEGER,
       references: {
-        model: "Pages",
+        model: { tableName: "Pages" },
         key: "id",
       },
       onUpdate: "CASCADE",

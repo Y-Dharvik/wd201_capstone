@@ -13,7 +13,7 @@ module.exports = {
     queryInterface.addColumn("Chapters", "courseId", {
       type: Sequelize.INTEGER,
       references: {
-        model: "Courses",
+        model: { tableName: "Courses" },
         key: "id",
       },
       onUpdate: "CASCADE",
